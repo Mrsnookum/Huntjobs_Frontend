@@ -596,14 +596,33 @@ function renderJobsTable(data) {
     }
     
     tbody.innerHTML = data.map(j => {
-        let sc = j.status === 'Active' ? 'success' : (j.status === 'Draft' ? 'warning' : 'danger');
+        let sc = '';
+        let displayStatus = j.status;
+        let customStyle = '';
+        
+        const rawStatus = j.status ? j.status.toLowerCase() : '';
+        
+        if (rawStatus === 'active') {
+            sc = 'success';
+            displayStatus = 'active';
+        } else if (rawStatus === 'expired') {
+            sc = 'danger';
+            displayStatus = 'Expired';
+        } else if (rawStatus === 'draft') {
+            sc = '';
+            customStyle = 'color: white; border: 1px solid white; background: transparent;';
+            displayStatus = 'Draft';
+        } else {
+            sc = 'warning';
+        }
+
         return `<tr>
             <td style="font-size:0.8rem; color:var(--text-dim);">${j.id}</td>
             <td><strong>${j.title}</strong></td>
             <td>${j.cat}</td>
             <td><span class="badge">${j.tier}</span></td>
             <td style="color:var(--success); font-weight:bold;">KES ${j.reward}</td>
-            <td><span class="badge ${sc}">${j.status}</span></td>
+            <td><span class="badge ${sc}" style="${customStyle}">${displayStatus}</span></td>
             <td>
                 <button class="btn-sm btn-primary" onclick="openEditJobModal('${j.id}')"><i data-lucide="edit" size="14"></i> Edit</button>
             </td>
@@ -618,7 +637,10 @@ function filterJobs() {
     
     const filtered = currentJobs.filter(j => {
         const matchSearch = j.title.toLowerCase().includes(search) || j.id.toLowerCase().includes(search);
-        const matchStatus = status === "All" || j.status === status;
+        
+        // This fully bypasses case mismatches from the database payload
+        const matchStatus = status === "All" || (j.status && j.status.toLowerCase() === status.toLowerCase());
+        
         return matchSearch && matchStatus;
     });
     
