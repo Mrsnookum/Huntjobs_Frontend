@@ -604,7 +604,7 @@ function renderJobsTable(data) {
         
         if (rawStatus === 'active') {
             sc = 'success';
-            displayStatus = 'active';
+            displayStatus = 'Active';
         } else if (rawStatus === 'expired') {
             sc = 'danger';
             displayStatus = 'Expired';
