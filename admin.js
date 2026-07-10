@@ -2,7 +2,7 @@
  * HuntJob Admin Panel Logic (Fully Connected)
  */
 
-const SCRIPT_URL = "http://127.0.0.1:8000/api/admin/exec";
+const SCRIPT_URL = "https://huntjobs-api.onrender.com";
 let adminKey = localStorage.getItem("hj_admin_key") || "";
 let currentUsers = []; 
 let currentWithdrawals = [];
