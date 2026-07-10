@@ -583,7 +583,13 @@ async function loadJobs() {
     
     const result = await adminApiRequest({ action: "adminGetJobs" });
     if (result.status === "Success") {
-        currentJobs = result.data;
+        // Normalize status capitalization in memory so the User Dashboard and filters align perfectly
+        currentJobs = result.data.map(job => {
+            if (job.status && job.status.toLowerCase() === 'active') job.status = 'Active';
+            else if (job.status && job.status.toLowerCase() === 'expired') job.status = 'Expired';
+            else if (job.status && job.status.toLowerCase() === 'draft') job.status = 'Draft';
+            return job;
+        });
         filterJobs(); 
     }
 }
@@ -691,6 +697,13 @@ async function saveJob() {
     const alertCheckbox = document.getElementById('jobSendAlert');
     if (alertCheckbox) sendAlertVal = alertCheckbox.checked;
 
+    // Force capitalization for the database so the User Dashboard can read it properly
+    let rawStatus = document.getElementById('jobStatus').value;
+    let formattedStatus = rawStatus;
+    if (rawStatus.toLowerCase() === 'active') formattedStatus = 'Active';
+    if (rawStatus.toLowerCase() === 'expired') formattedStatus = 'Expired';
+    if (rawStatus.toLowerCase() === 'draft') formattedStatus = 'Draft';
+
     const payload = {
         action: "adminSaveJob",
         rowId: document.getElementById('jobRowId').value, 
@@ -700,8 +713,8 @@ async function saveJob() {
         reward: Number(document.getElementById('jobReward').value),
         tokens: Number(document.getElementById('jobTokens').value),
         desc: document.getElementById('jobDesc').value,
-        status: document.getElementById('jobStatus').value,
-        sendAlert: sendAlertVal // Add the boolean
+        status: formattedStatus, // Send the capitalized version!
+        sendAlert: sendAlertVal
     };
 
     if(!payload.title || !payload.reward) { showToast("Title and Reward are required", "danger"); return; }
