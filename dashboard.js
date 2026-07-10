@@ -1,5 +1,5 @@
 // We keep SCRIPT_URL active for unmigrated endpoints, and use API_BASE_URL for the new Python ones.
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+const API_BASE_URL = "https://huntjobs-api.onrender.com";
 const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 Minutes
 
 // Global state for filtering & Tickets
