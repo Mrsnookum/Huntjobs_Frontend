@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- 1. ELEMENTS SELECTION & CONFIG ---
-    const API_BASE_URL = "https://huntjobs-api.onrender.com";
+   const SCRIPT_URL = "https://huntjobs-api.onrender.com/api";
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
     const authModal = document.getElementById('authModal');
