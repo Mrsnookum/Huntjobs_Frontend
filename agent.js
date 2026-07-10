@@ -4,7 +4,7 @@
  */
 
 // NEW Python Local Backend URL
-const SCRIPT_URL = "http://127.0.0.1:8000/api/agents/exec";
+const SCRIPT_URL = "https://huntjobs-api.onrender.com";
 let currentAgent = null;
 let revenueChartInstance = null;
 let funnelChartInstance = null;
